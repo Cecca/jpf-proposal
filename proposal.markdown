@@ -189,7 +189,7 @@ The cyan node is the one that affects the relevant state, whereas pale green
 ones are the ones on which it depends on (apart from `return`, that should be
 generated anyway).
 
-![Point PFG](https://gist.github.com/Cecca/8154bd85e294ab5ebb50/raw/c71c034dd25ddb5ae20d0cdd7753fa922226b06e/Point.png)
+![Point PFG](https://raw.github.com/Cecca/jpf-proposal/master/Point.png)
 
 We can then prune the graph from non necessary nodes, getting the following
 Jimple representation, that corresponds to the code presented earlier for the
@@ -284,7 +284,7 @@ majority of code is devoted to the modification of the customer's name. Since we
 are not interested in tracking such changes, the only contribution of this code
 is to increase greatly the state space size. Let's see if we can prune the PDG.
 
-![Bank account PFG](https://gist.github.com/Cecca/8154bd85e294ab5ebb50/raw/5d7c3b23c89d5be7dd247ac1ca680f35c7e53678/BankAccount.png)
+![Bank account PFG](https://raw.github.com/Cecca/jpf-proposal/master/BankAccount.png)
 
 The graph is quite big and complex for such a simple method, however pruning
 the nodes that do not influence the relevant state reduce greatly this
