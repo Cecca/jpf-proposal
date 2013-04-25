@@ -12,7 +12,7 @@ However this tool generates only empty stubs, forcing the developer to add
 the desired behaviour manually.
 
 This project aims to provide a tool to generate model classes for the 
-use with model checkers suchas JPF. The generated model classes should 
+use with model checkers such as JPF. The generated model classes should 
 exhibit behaviour that affects only some relevant state the user is 
 interested in.
 
@@ -328,6 +328,61 @@ public void deposit(double quantity) {
 
 The code that changed the name of the customer disappeared from the model
 method, leading to a smaller state space for the model checker to handle.
+
+
+### The "Obscure" class problem ###
+
+There is a problem with during the static analisys performed to decide what code
+should be generated. I call this the _Obscure_ class problem. It concerns
+the depth of the recursion we use to generate code and the degree of knowledge the
+developer has on the library he is modeling.
+
+An example is worth a thousand words, so here is a simple one to illustrate the
+problem.
+Suppose the developer is trying to model a class called `Foo`. He knows
+everything about the fields of the class, including their type. However
+one of the methods of the class is the following:
+
+```java
+public void bar(String someParameter) {
+  // do some stuff ..
+  relevantField = obscureInstance.method();
+  // do some other stuff ..
+}
+```
+
+The problem here is the call to `method` of class `Obscure`. This class is
+called in this way because the developer knows nothing about it, even that it
+was used in the code. However, since that statement affects a relevant field
+we need to include it in the model class code.
+
+At this point we have two possible solutions: build a model class for `Obscure`
+or use native peers. The first solution seems the less attractive: the developer
+does not know anything about the class, so he can't tell what is its relevant
+state and it's unlikely that he wants to have the state space polluted by the
+state of this class.
+
+The use of native peers seems the most reasonable approach, since it enables us
+to maintain the correct behavoiur without paying the state space fee. Moreover,
+it frees the developer from making decisions he does not want to take.
+
+This problem may seem artificial, however in the Java Standard Library we have
+plenty of examples about it: think about classes that are inside the package
+`sun.misc`. Or, for instance, the developer is modeling a library that relies on
+some other library and he does not want to include that library in the model
+generation. In all these cases we have an _Obscure_ class problem.
+
+
+### A simple model generation to start with ###
+
+The model generation based on slicing is interesting and seems promising,
+however it would be nice to have something that works early in the development
+process. So a simpler method to generate models with behaviour may be desirable.
+
+The method I propose is based on the generation of random values. The only
+behaviour exhibited by the methods of the model class is that they return random
+values in the appropriate domain. In order to avoid the pollution of the state
+space with unwanted state, this can be accomplished with native peers.
 
 
 Development methodology
