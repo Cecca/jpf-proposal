@@ -123,9 +123,16 @@ to generate environments for model checking. An integration of this new tool
 with this project seems interesting, since we can leverage existing and already
 tested code.
 
-Hence I plan to implement the tool with a modular architecture, in order to make
+Hence, I plan to implement the tool with a modular architecture, in order to make
 possible to plug in different model generation strategies. I plan to make this
-tool both as standalone and as an extension of OcseGEN.
+tool both as standalone and as an extension of OCSEGen.
+
+
+### Prior work ###
+
+As already mentioned, the OCSEGen tool already provides some features that are
+interesting for this project. In particular, it provides a side-effect analysis
+feature that identifies the changes that occur to certain fields.
 
 
 ### Examples ###
@@ -341,7 +348,12 @@ Goals
 -----
 
 The goal of this project is to provide a standalone tool and an extension of
-OcseGEN to perform model generation for model checkers such as JPF.
+OCSEGen to perform model generation for model checkers such as JPF.
+
+An application of this tool can be the regeneration of some libraries of `jpf-awt`
+and `jpf-android` and some missing models as well. This should be done after the
+identification of the fields that implement important features. These fields will
+be the relevant state for the model generation.
 
 
 About myself
