@@ -102,6 +102,14 @@ can first find the nodes that affect directly the relevant state. Then we can
 keep all the nodes they depend on and discard all the others. This way we will
 have a model method that contains code that only affects the relevant state.
 
+#### Prototype of the proposed solution ####
+
+To better explore this idea, I wrote a prototype that is hosted at my
+BitBucket account: 
+[model-generator-slicing-demo](https://bitbucket.org/cecca/model-generator-slicing-demo).
+
+You can find the documentation of this prototype 
+[here](http://www.dei.unipd.it/~ceccarel/jpf-docs/).
 
 ### Implementation ###
 
@@ -123,9 +131,31 @@ to generate environments for model checking. An integration of this new tool
 with this project seems interesting, since we can leverage existing and already
 tested code.
 
+#### Tool architecture ####
+
 Hence, I plan to implement the tool with a modular architecture, in order to make
 possible to plug in different model generation strategies. I plan to make this
 tool both as standalone and as an extension of OCSEGen.
+
+#### Tool configuration ####
+
+The plugin will be configured through a Domain Specific Language that enables
+the user to specify the configuration in this way
+
+```groovy
+scope {
+  
+  cls "some.class.to.be.Sliced" fields "relevantFieldOne", "relevantFieldTwo"
+
+  cls "some.library.InterestingClass" all fields
+  
+  cls "some.library.DontCareAboutState" no fields
+  
+}
+```
+
+You can find a prototype of this DSL on my BitBucket account: 
+[model-generator-dsl](https://bitbucket.org/cecca/model-generator-dsl).
 
 
 ### Prior work ###
@@ -397,6 +427,24 @@ development process will be in 4 steps:
      implemented before starting the development of the model generation plugins.
   3. Implementation of a random model generator
   4. Implmentation of a model generator based on slicing.
+
+The proposed schedule is the following:
+
+  - May: write a prototype to spot hard problems and take confidence with the SOOT 
+    library and OCSEGen.
+  - June - first week of July: design the architecture of the application and 
+    discuss the problems arised during the prototyping phase. Implementation of
+    the core of the application. This will include the creation of a Domain 
+    Specific Language to configure the tool.
+  - Second and third week of July: write the plugin that generates models that
+    return random values on method calls.
+  - Last week of July and August: write the plugin that generates models by
+    means of slicing.
+  - End of August: application of the tool to jpf-awt libraries.
+
+Note that this schedule may not be this strict: for example the application to
+jpf-awt libraries can be used throughout the development of the plugins as a
+benchmark.
 
 
 Goals
